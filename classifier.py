@@ -12,14 +12,6 @@ from keras.applications.vgg19 import VGG19
 # from keras.applications.vgg19 import decode_predictions
 from keras.applications.vgg19 import preprocess_input
 
-# from keras.applications.inception_v3 import InceptionV3
-# from keras.applications.inception_v3 import decode_predictions
-# from keras.applications.inception_v3 import preprocess_input
-
-# from keras.applications.resnet50 import ResNet50
-# from keras.applications.resnet50 import decode_predictions
-# from keras.applications.resnet50 import preprocess_input
-
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
@@ -37,6 +29,10 @@ import matplotlib.pyplot as plt
 
 DEBUG = False
 JSON_LABEL_PATH = "./flowers.json"
+
+# VGG19
+vgg19_weights = './weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5'
+vgg19_model = VGG19(weights=vgg19_weights, include_top=False)
 
 
 def get_json_label_id(labels_file_paths):
@@ -66,21 +62,6 @@ def get_features(img_path, this_model):
     img_data = load_image(img_path)
     img_features = this_model.predict(img_data)
     return img_features
-
-
-# Inception
-# inception_weights = './weights/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
-# inception_model = InceptionV3(weights=inception_weights, include_top=False)
-
-# resnet50
-# resnet50_weights = './weights/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
-# inception_model = ResNet50(weights=resnet50_weights)
-# _get_predictions(inception_model)
-
-
-# VGG19
-vgg19_weights = './weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5'
-vgg19_model = VGG19(weights=vgg19_weights, include_top=False)
 
 
 labels_dict = get_json_label_id(JSON_LABEL_PATH)
