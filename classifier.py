@@ -32,16 +32,22 @@ JSON_LABEL_PATH = "./flowers.json"
 
 # VGG19
 vgg19_weights = './weights/vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5'
-vgg19_model = VGG19(weights=vgg19_weights, include_top=False)
 
 
-def get_json_label_id(labels_file_paths):
-    with open('flowers.json') as json_file:
+
+def init():
+    vgg19_model = VGG19(weights=vgg19_weights, include_top=False)
+    
+
+
+def get_json_label_id():
+    with open(JSON_LABEL_PATH) as json_file:
         json_label = json.load(json_file)
     return json_label
 
 
-def id_to_label_dict(json_label):
+def id_to_label_dict():
+    json_label = get_json_label_id()
     flower_dict = {}
     for each_flower in json_label:
         flower_dict[json_label[each_flower]['id']] = each_flower
@@ -63,14 +69,13 @@ def get_features(img_path, this_model):
     img_features = this_model.predict(img_data)
     return img_features
 
-
-labels_dict = get_json_label_id(JSON_LABEL_PATH)
-id_labels = id_to_label_dict(labels_dict)
+init()
+id_of_labels = id_to_label_dict()
+labels = []
 
 # read to ensure they are real there
 raw_labels = os.listdir("./data/")
-labels = []
-labels_name = []
+# labels_name = []
 for this_label in raw_labels:
     labels.append(labels_dict[this_label]['id'])
 
@@ -80,30 +85,31 @@ nber_labels = len(labels)
 
 # initialize a dict of labels and the data set
 data = {}
-test_images = {}
+test_images = {}  # for testing
 expected_labels = []
 
 for i in range(nber_labels):
-    data[labels[i]] = os.listdir("./data/"+id_labels[labels[i]]+"/")
-    test_images[labels[i]] = []
+    data[id_of_labels[labels[i]]] = os.listdir("./data/"+labels[i]+"/")
+    test_images[id_of_labels[labels[i]]] = []
 
-    for j in range(3):
+    for j in range(len(data[labels[i]])/4):
         # print(labels[i], len(data[labels[i]]))
         temp_flower = random.randint(0, len(data[labels[i]])-1)
         expected_labels.append(labels[i])
 
-        test_images[labels[i]].append(data[labels[i]][temp_flower])
+        test_images[id_of_labels[labels[i]]].append(data[id_of_labels[labels[i]]][temp_flower])
         # remove images added to the test images
-        del data[labels[i]][temp_flower]
+        del data[id_of_labels[labels[i]]][temp_flower]
 
 
 # initialize  dict of features
+# TODO use if to check instead of a for loop
 features = {}
 for x in range(nber_labels):
     features[labels[x]] = []
 
 for label, flowers in data.items():
-    basepath = "./data/"+id_labels[label]
+    basepath = "./data/"+id_of_labels[label]
 
     for flower in flowers:
         feats = get_features(basepath + "/" + flower, vgg19_model)
@@ -124,7 +130,7 @@ dataset.head()
 test_features = []
 test_images_paths = []
 for test_label, test_flowers in test_images.items():
-    basepath = "./data/"+id_labels[test_label]
+    basepath = "./data/"+id_of_labels[test_label]
 
     for test_flower in test_flowers:
         test_flower_path = basepath + "/" + test_flower
