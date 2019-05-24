@@ -77,7 +77,7 @@ labels = []
 raw_labels = os.listdir("./data/")
 # labels_name = []
 for this_label in raw_labels:
-    labels.append(labels_dict[this_label]['id'])
+    labels.append(id_of_labels[this_label]['id'])
 
 
 print("labels", labels)
