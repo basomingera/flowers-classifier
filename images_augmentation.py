@@ -87,7 +87,7 @@ class ImagesAugmentation(object):
         # generate samples and plot
         for i in range(9):
             # define subplot
-            pyplot.subplot(330 + 1 + i)
+            # pyplot.subplot(330 + 1 + i)
 
             # generate batch of images
             batch = it.next()
@@ -97,18 +97,16 @@ class ImagesAugmentation(object):
             new_name = name + suffix + str(i) + extension
 
             pyplot.imshow(image)
-            # pyplot.axis('off')
-            #
-            # pyplot.gca().xaxis.set_major_locator(ticker.NullLocator())
-            # pyplot.gca().yaxis.set_major_locator(ticker.NullLocator())
-            #
-            # pyplot.savefig(new_name, bbox_inches='tight', pad_inches=0, transparent="True")
-            # pyplot.close
+            pyplot.axis('off')
 
-        #     # plot raw pixel data
-            pyplot.imshow(image)
-        # show the figure
-        pyplot.show()
+            pyplot.gca().xaxis.set_major_locator(ticker.NullLocator())
+            pyplot.gca().yaxis.set_major_locator(ticker.NullLocator())
+
+            pyplot.savefig(new_name, bbox_inches='tight', pad_inches=0, transparent="True")
+            pyplot.close
+
+        #     pyplot.imshow(image)
+        # pyplot.show()
 
 
 dataset = get_list_of_images()
