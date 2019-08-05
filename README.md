@@ -1,2 +1,2 @@
 # flowers-classifier
-An automated flower classification using machine learning (Still under development)
+An automated ML-based flowers detection and classification using TDA (Topological data analysis) ==> (Still under development)
