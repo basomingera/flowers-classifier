@@ -82,15 +82,17 @@ class ImagesAugmentation(object):
         it = datagen.flow(self.samples, batch_size=1)
 
         name, extension = os.path.splitext(self.image_path)
-        print(name + suffix + extension)
+        # print(name + suffix + extension)
 
         # generate samples and plot
         for i in range(9):
             # define subplot
-            # pyplot.subplot(330 + 1 + i)
+            pyplot.subplot(330 + 1 + i)
 
             # generate batch of images
             batch = it.next()
+            # if i%2 == 0:
+            #     continue
             # convert to unsigned integers for viewing
             image = batch[0].astype('uint8')
 
@@ -105,8 +107,8 @@ class ImagesAugmentation(object):
             pyplot.savefig(new_name, bbox_inches='tight', pad_inches=0, transparent="True")
             pyplot.close
 
-        #     pyplot.imshow(image)
-        # pyplot.show()
+            pyplot.imshow(image)
+        pyplot.show()
 
 
 dataset = get_list_of_images()
@@ -115,8 +117,9 @@ for label, flowers in dataset.items():
     for flower in flowers:
         print(basepath + "/" + flower)
         image_augmentation = ImagesAugmentation(basepath + "/" + flower)
+
+        image_augmentation.brightness_datagen()
         image_augmentation.augmentation_datagen()
         image_augmentation.flipImages_datagen()
         image_augmentation.random_rot_datagen()
-        image_augmentation.brightness_datagen()
         image_augmentation.zoom_datagen()
